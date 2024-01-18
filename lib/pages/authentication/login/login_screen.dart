@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../theme/text_style.dart';
 import '../Registration/email_register.dart';
+import '../forgot_password/forgot_password.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -81,203 +82,208 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    return Material(
-      child: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(
-              'assets/background.png'
-            ),
-            fit: BoxFit.cover
-          )
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: size.height / 6,
-                ),
-                Text(
-                  'Login',
-                  style: boldText(primaryYellow),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  'Securely log into your account',
-                  style: smallText(primaryWhite),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormField(
-                  style: smallText(primaryWhite),
-                  controller: emailController,
-                  autofillHints: const [AutofillHints.email],
-                  onEditingComplete: () => [
-                    FocusScope.of(context).unfocus(),
-                  ],
-                  decoration: InputDecoration(
-                    labelText: 'Email Address',
-                    hintText: 'Enter your email address',
-                    hintStyle: smallText(primaryWhite),
-                    labelStyle: const TextStyle(color: primaryWhite),
-                    suffixIcon: emailController.text.isEmpty
-                        ? Container(
-                      width: 0,
-                    )
-                        : IconButton(
-                      icon: const Icon(
-                        Icons.close,
-                        color: Colors.grey,
-                      ),
-                      onPressed: () {
-                        emailController.clear();
-                      },
-                    ),
-                    filled: true,
-                    fillColor: cardColor,
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                        color: Colors.grey,
-                        width: 1.0,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                        color: primaryYellow,
-                        width: 1.0,
-                      ),
-                    ),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Material(
+        child: Container(
+          height: size.height,
+          width: size.width,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(
+                'assets/background.png'
+              ),
+              fit: BoxFit.cover
+            )
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: size.height / 6,
                   ),
-                  keyboardType: TextInputType.emailAddress,
-                ),
-                const SizedBox(
-                  height: 25,
-                ),
-                TextFormField(
-                  style: smallText(primaryWhite),
-                  controller: passwordController,
-                  obscureText: _obscureText,
-                  autofillHints: const [AutofillHints.password],
-                  onEditingComplete: () => [
-                    FocusScope.of(context).unfocus(),
-                  ],
-                  decoration: InputDecoration(
-                    labelText: 'Password*',
-                    hintText: 'xxxxxxxxxx',
-                    hintStyle: smallText(primaryWhite),
-                    labelStyle: const TextStyle(color: primaryWhite),
-                    filled: true,
-                    fillColor: cardColor,
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        _toggle();
-                      },
-                      icon: _obscureText
-                          ? const Icon(
-                        FontAwesomeIcons.eyeSlash,
-                        color: Colors.grey,
-                        size: 15,
+                  Text(
+                    'Login',
+                    style: boldText(primaryYellow),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    'Securely log into your account',
+                    style: smallText(primaryWhite),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    style: smallText(primaryWhite),
+                    controller: emailController,
+                    autofillHints: const [AutofillHints.email],
+                    onEditingComplete: () => [
+                      FocusScope.of(context).unfocus(),
+                    ],
+                    decoration: InputDecoration(
+                      labelText: 'Email Address',
+                      hintText: 'Enter your email address',
+                      hintStyle: smallText(primaryWhite),
+                      labelStyle: const TextStyle(color: primaryWhite),
+                      suffixIcon: emailController.text.isEmpty
+                          ? Container(
+                        width: 0,
                       )
-                          : const Icon(
-                        Icons.remove_red_eye,
-                        color: Colors.grey,
-                        size: 20,
+                          : IconButton(
+                        icon: const Icon(
+                          Icons.close,
+                          color: Colors.grey,
+                        ),
+                        onPressed: () {
+                          emailController.clear();
+                        },
+                      ),
+                      filled: true,
+                      fillColor: cardColor,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(
+                          color: Colors.grey,
+                          width: 1.0,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(
+                          color: primaryYellow,
+                          width: 1.0,
+                        ),
                       ),
                     ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                        color: Colors.grey,
-                        width: 1.0,
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  TextFormField(
+                    style: smallText(primaryWhite),
+                    controller: passwordController,
+                    obscureText: _obscureText,
+                    autofillHints: const [AutofillHints.password],
+                    onEditingComplete: () => [
+                      FocusScope.of(context).unfocus(),
+                    ],
+                    decoration: InputDecoration(
+                      labelText: 'Password*',
+                      hintText: 'xxxxxxxxxx',
+                      hintStyle: smallText(primaryWhite),
+                      labelStyle: const TextStyle(color: primaryWhite),
+                      filled: true,
+                      fillColor: cardColor,
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          _toggle();
+                        },
+                        icon: _obscureText
+                            ? const Icon(
+                          FontAwesomeIcons.eyeSlash,
+                          color: Colors.grey,
+                          size: 15,
+                        )
+                            : const Icon(
+                          Icons.remove_red_eye,
+                          color: Colors.grey,
+                          size: 20,
+                        ),
                       ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                        color: primaryYellow,
-                        width: 1.0,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(
+                          color: Colors.grey,
+                          width: 1.0,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(
+                          color: primaryYellow,
+                          width: 1.0,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => ForgotPassword(),
-                        //   ),
-                        // );
-                      },
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ForgotPassword(),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          'Forgot Password?',
+                          style: smallText(primaryYellow),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  SizedBox(
+                    height: size.height * 0.06,
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: (){},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primaryYellow,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
                       child: Text(
-                        'Forgot Password?',
-                        style: smallText(primaryYellow),
+                        'Login',
+                        style: mediumBold(primaryBlack),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                SizedBox(
-                  height: size.height * 0.06,
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: (){},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: primaryYellow,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                    child: Text(
-                      'Login',
-                      style: mediumBold(primaryBlack),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Don't have an account ?",
-                      style: smallText(primaryWhite),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const Register(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'Register',
-                        style: mediumText(primaryYellow),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Don't have an account ?",
+                        style: smallText(primaryWhite),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const Register(),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          'Register',
+                          style: mediumText(primaryYellow),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
