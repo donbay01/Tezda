@@ -1,3 +1,4 @@
+import 'package:e_commerce/pages/homepage.dart';
 import 'package:e_commerce/theme/color.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -243,7 +244,14 @@ class _LoginPageState extends State<LoginPage> {
                     height: size.height * 0.06,
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const HomePage(),
+                          ),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: primaryYellow,
                         shape: RoundedRectangleBorder(
