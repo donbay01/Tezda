@@ -5,6 +5,7 @@ import '../../../components/snackbar.dart';
 import '../../../service/auth.dart';
 import '../../../service/progress.dart';
 import '../../../theme/text_style.dart';
+import '../../homepage.dart';
 import '../login/login_screen.dart';
 
 class Register extends StatefulWidget {
@@ -384,10 +385,11 @@ class _RegisterState extends State<Register> {
           context: context,
           message: 'Account created',
         );
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (_) => const VerifyEmail()),
-        // );
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (ctx) => const HomePage(),
+          ),
+        );
       } catch (e) {
         print(e);
         var err = e as dynamic;

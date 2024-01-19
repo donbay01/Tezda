@@ -1,22 +1,31 @@
-import 'package:e_commerce/models/rating.dart';
+import 'package:e_commerce/models/category.dart';
 
 class Product {
   final int id;
   final String title;
-  final double price;
+  final int price;
   final String description;
-  final String category;
-  final String image;
-  final Rating rating;
+  final Category category;
+  final List<String> images;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'price': price,
+      'description': description,
+      'images': images,
+      'category': category.toJson(),
+    };
+  }
 
   Product.fromJSON(Map<String, dynamic> json)
       : id = json['id'],
         title = json['title'],
         price = json['price'],
         description = json['description'],
-        category = json['category'],
-        image = json['image'],
-        rating = Rating.fromJSON(json['rating']);
+        category = Category.fromJSON(json['category']),
+        images = json['images'].toList().cast<String>();
 
   Product(
     this.id,
@@ -24,7 +33,6 @@ class Product {
     this.price,
     this.description,
     this.category,
-    this.image,
-    this.rating,
+    this.images,
   );
 }

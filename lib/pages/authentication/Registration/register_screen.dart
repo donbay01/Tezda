@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:web3modal_flutter/web3modal_flutter.dart';
 
+import '../../homepage.dart';
+
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
 
@@ -98,6 +100,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         );
                         await AuthService.signInCustom(
                           token,
+                        );
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => const HomePage(),
+                          ),
                         );
                       } catch (e) {
                         print(e);
