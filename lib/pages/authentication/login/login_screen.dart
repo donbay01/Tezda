@@ -1,11 +1,14 @@
 import 'package:e_commerce/pages/homepage.dart';
 import 'package:e_commerce/theme/color.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../../../components/snackbar.dart';
+import '../../../service/auth.dart';
+import '../../../service/progress.dart';
 import '../../../theme/text_style.dart';
 import '../Registration/email_register.dart';
 import '../forgot_password/forgot_password.dart';
-
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -27,50 +30,51 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  // login() async {
-  //   var email = emailController.text;
-  //   var password = passwordController.text;
-  //   FocusScope.of(context).unfocus();
-  //
-  //   if (email.isEmpty) {
-  //     return SnackbarHelper.displayToastMessage(
-  //       context: context,
-  //       message: 'You need to enter your email',
-  //     );
-  //   }
-  //
-  //   if (password.isEmpty) {
-  //     return SnackbarHelper.displayToastMessage(
-  //       context: context,
-  //       message: 'You need to enter your password',
-  //     );
-  //   }
-  //
-  //   try {
-  //     await ProgressService.show(context);
-  //     await AuthService.signIn(
-  //       email: email,
-  //       password: password,
-  //     );
-  //     await ProgressService.hide();
-  //     Navigator.of(context).push(
-  //       MaterialPageRoute(
-  //         builder: (ctx) => const HomePage(),
-  //       ),
-  //     );
-  //   } on FirebaseAuthException catch (e) {
-  //     var message = e.message;
-  //     if (e.code == 'user-not-found') {
-  //       message = 'Account not found';
-  //     }
-  //
-  //     await ProgressService.hide();
-  //     return SnackbarHelper.displayToastMessage(
-  //       context: context,
-  //       message: message!,
-  //     );
-  //   }
-  // }
+  login() async {
+    var email = emailController.text;
+    var password = passwordController.text;
+    FocusScope.of(context).unfocus();
+
+    if (email.isEmpty) {
+      return SnackbarHelper.displayToastMessage(
+        context: context,
+        message: 'You need to enter your email',
+      );
+    }
+
+    if (password.isEmpty) {
+      return SnackbarHelper.displayToastMessage(
+        context: context,
+        message: 'You need to enter your password',
+      );
+    }
+
+    try {
+      await ProgressService.show(context);
+      await AuthService.login(
+        email,
+        password,
+      );
+      await ProgressService.hide();
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (ctx) => const HomePage(),
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      print(e.code);
+      var message = e.message;
+      if (e.code == 'invalid-credential') {
+        message = 'An error occured. Cross check your email and password';
+      }
+
+      await ProgressService.hide();
+      return SnackbarHelper.displayToastMessage(
+        context: context,
+        message: message!,
+      );
+    }
+  }
 
   @override
   void dispose() {
@@ -89,13 +93,11 @@ class _LoginPageState extends State<LoginPage> {
         child: Container(
           height: size.height,
           width: size.width,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(
-                'assets/background.png'
-              ),
-              fit: BoxFit.cover
-            )
+              image: AssetImage('assets/background.png'),
+              fit: BoxFit.cover,
+            ),
           ),
           child: Padding(
             padding: const EdgeInsets.all(20.0),
@@ -135,17 +137,17 @@ class _LoginPageState extends State<LoginPage> {
                       labelStyle: const TextStyle(color: primaryWhite),
                       suffixIcon: emailController.text.isEmpty
                           ? Container(
-                        width: 0,
-                      )
+                              width: 0,
+                            )
                           : IconButton(
-                        icon: const Icon(
-                          Icons.close,
-                          color: Colors.grey,
-                        ),
-                        onPressed: () {
-                          emailController.clear();
-                        },
-                      ),
+                              icon: const Icon(
+                                Icons.close,
+                                color: Colors.grey,
+                              ),
+                              onPressed: () {
+                                emailController.clear();
+                              },
+                            ),
                       filled: true,
                       fillColor: cardColor,
                       enabledBorder: OutlineInputBorder(
@@ -189,15 +191,15 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         icon: _obscureText
                             ? const Icon(
-                          FontAwesomeIcons.eyeSlash,
-                          color: Colors.grey,
-                          size: 15,
-                        )
+                                FontAwesomeIcons.eyeSlash,
+                                color: Colors.grey,
+                                size: 15,
+                              )
                             : const Icon(
-                          Icons.remove_red_eye,
-                          color: Colors.grey,
-                          size: 20,
-                        ),
+                                Icons.remove_red_eye,
+                                color: Colors.grey,
+                                size: 20,
+                              ),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -244,14 +246,7 @@ class _LoginPageState extends State<LoginPage> {
                     height: size.height * 0.06,
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: (){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const HomePage(),
-                          ),
-                        );
-                      },
+                      onPressed: login,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: primaryYellow,
                         shape: RoundedRectangleBorder(

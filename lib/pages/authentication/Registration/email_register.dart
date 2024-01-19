@@ -1,6 +1,9 @@
 import 'package:e_commerce/theme/color.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../../../components/snackbar.dart';
+import '../../../service/auth.dart';
+import '../../../service/progress.dart';
 import '../../../theme/text_style.dart';
 import '../login/login_screen.dart';
 
@@ -256,19 +259,16 @@ class _RegisterState extends State<Register> {
                           termsAndCondition = newValue!;
                         });
                       },
-                      controlAffinity: ListTileControlAffinity
-                          .leading, //  <-- leading Checkbox
+                      controlAffinity: ListTileControlAffinity.leading,
                     ),
                     const SizedBox(
                       height: 20,
                     ),
-                    Container(
+                    SizedBox(
                       height: MediaQuery.of(context).size.height * 0.06,
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: (){
-
-                        },
+                        onPressed: register,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: primaryYellow,
                           shape: RoundedRectangleBorder(
@@ -323,80 +323,80 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  // register() async {
-  //   var username = userNameController.text;
-  //   var email = emailController.text;
-  //   var password = passwordController.text;
-  //
-  //   FocusScope.of(context).unfocus();
-  //
-  //   if (userNameController.text.isEmpty) {
-  //     SnackbarHelper.displayToastMessage(
-  //       context: context,
-  //       message: "Kindly Provide your Username",
-  //     );
-  //   } else if (emailController.text.isEmpty) {
-  //     SnackbarHelper.displayToastMessage(
-  //       context: context,
-  //       message: "Kindly Provide an email",
-  //     );
-  //   } else if (passwordController.text.isEmpty) {
-  //     SnackbarHelper.displayToastMessage(
-  //       context: context,
-  //       message: "Kindly Provide a Password",
-  //     );
-  //   } else if (userNameController.text.length < 2) {
-  //     SnackbarHelper.displayToastMessage(
-  //       context: context,
-  //       message: "please provide a username",
-  //     );
-  //   } else if (!emailController.text.contains("@")) {
-  //     SnackbarHelper.displayToastMessage(
-  //       context: context,
-  //       message: "Enter a valid email address",
-  //     );
-  //   } else if (!emailController.text.contains(".")) {
-  //     SnackbarHelper.displayToastMessage(
-  //       context: context,
-  //       message: "Enter a valid email address",
-  //     );
-  //   } else if (passwordController.text.length < 4) {
-  //     SnackbarHelper.displayToastMessage(
-  //       context: context,
-  //       message: "Your Password is weak",
-  //     );
-  //   } else if (termsAndCondition == false) {
-  //     SnackbarHelper.displayToastMessage(
-  //       context: context,
-  //       message: "Accept Terms and Conditions",
-  //     );
-  //   }
-  //   // else {
-  //   //   try {
-  //   //     await ProgressService.show(context);
-  //   //     await AuthService.register(
-  //   //       username: username,
-  //   //       email: email,
-  //   //       password: password,
-  //   //     );
-  //   //     await AuthService.buildProfile();
-  //   //     await ProgressService.hide();
-  //   //     SnackbarHelper.displayToastMessage(
-  //   //       context: context,
-  //   //       message: 'Account created',
-  //   //     );
-  //   //     Navigator.push(
-  //   //       context,
-  //   //       MaterialPageRoute(builder: (_) => const VerifyEmail()),
-  //   //     );
-  //   //   } catch (e) {
-  //   //     var err = e as dynamic;
-  //   //     await ProgressService.hide();
-  //   //     return SnackbarHelper.displayToastMessage(
-  //   //       context: context,
-  //   //       message: err.message,
-  //   //     );
-  //   //   }
-  //   // }
-  // }
+  register() async {
+    var username = userNameController.text;
+    var email = emailController.text;
+    var password = passwordController.text;
+
+    FocusScope.of(context).unfocus();
+
+    if (userNameController.text.isEmpty) {
+      SnackbarHelper.displayToastMessage(
+        context: context,
+        message: "Kindly Provide your Username",
+      );
+    } else if (emailController.text.isEmpty) {
+      SnackbarHelper.displayToastMessage(
+        context: context,
+        message: "Kindly Provide an email",
+      );
+    } else if (passwordController.text.isEmpty) {
+      SnackbarHelper.displayToastMessage(
+        context: context,
+        message: "Kindly Provide a Password",
+      );
+    } else if (userNameController.text.length < 2) {
+      SnackbarHelper.displayToastMessage(
+        context: context,
+        message: "please provide a username",
+      );
+    } else if (!emailController.text.contains("@")) {
+      SnackbarHelper.displayToastMessage(
+        context: context,
+        message: "Enter a valid email address",
+      );
+    } else if (!emailController.text.contains(".")) {
+      SnackbarHelper.displayToastMessage(
+        context: context,
+        message: "Enter a valid email address",
+      );
+    } else if (passwordController.text.length < 4) {
+      SnackbarHelper.displayToastMessage(
+        context: context,
+        message: "Your Password is weak",
+      );
+    } else if (termsAndCondition == false) {
+      SnackbarHelper.displayToastMessage(
+        context: context,
+        message: "Accept Terms and Conditions",
+      );
+    } else {
+      try {
+        await ProgressService.show(context);
+        await AuthService.register(
+          email,
+          password,
+          username,
+        );
+        // await AuthService.buildProfile();
+        await ProgressService.hide();
+        SnackbarHelper.displayToastMessage(
+          context: context,
+          message: 'Account created',
+        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (_) => const VerifyEmail()),
+        // );
+      } catch (e) {
+        print(e);
+        var err = e as dynamic;
+        await ProgressService.hide();
+        return SnackbarHelper.displayToastMessage(
+          context: context,
+          message: err.message,
+        );
+      }
+    }
+  }
 }

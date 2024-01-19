@@ -1,8 +1,11 @@
 import 'package:e_commerce/components/snackbar.dart';
 import 'package:e_commerce/theme/color.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../../service/auth.dart';
+import '../../../service/progress.dart';
 import '../../../theme/text_style.dart';
 
 class ForgotPassword extends StatefulWidget {
@@ -20,33 +23,34 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     super.dispose();
   }
 
-  // reset() async {
-  //   FocusScope.of(context).unfocus();
-  //   var email = emailController.text;
-  //
-  //   if (email.isEmpty) {
-  //     return SnackbarHelper.displayToastMessage(
-  //       context: context,
-  //       message: 'A valid email is required',
-  //     );
-  //   }
-  //
-  //   try {
-  //     await ProgressService.show(context);
-  //     await AuthService.resetPassword(email: email);
-  //     await ProgressService.hide();
-  //     return SnackbarHelper.displayToastMessage(
-  //       context: context,
-  //       message: 'An email has been sent',
-  //     );
-  //   } on FirebaseAuthException catch (e) {
-  //     await ProgressService.hide();
-  //     return SnackbarHelper.displayToastMessage(
-  //       context: context,
-  //       message: e.message!,
-  //     );
-  //   }
-  // }
+  reset() async {
+    FocusScope.of(context).unfocus();
+    var email = emailController.text;
+
+    if (email.isEmpty) {
+      return SnackbarHelper.displayToastMessage(
+        context: context,
+        message: 'A valid email is required',
+      );
+    }
+
+    try {
+      await ProgressService.show(context);
+      await AuthService.resetPassword(email);
+      await ProgressService.hide();
+      return SnackbarHelper.displayToastMessage(
+        context: context,
+        message: 'An email has been sent',
+      );
+    } on FirebaseAuthException catch (e) {
+      print(e.code);
+      await ProgressService.hide();
+      return SnackbarHelper.displayToastMessage(
+        context: context,
+        message: e.message!,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,13 +62,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         child: Container(
           height: size.height,
           width: size.width,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage(
-                      'assets/background.png'
-                  ),
-                  fit: BoxFit.cover
-              )
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/background.png'),
+              fit: BoxFit.cover,
+            ),
           ),
           child: SingleChildScrollView(
             child: Padding(
@@ -115,7 +117,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     height: MediaQuery.of(context).size.height * 0.06,
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: reset,
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
