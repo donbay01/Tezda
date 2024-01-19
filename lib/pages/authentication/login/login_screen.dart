@@ -3,6 +3,8 @@ import 'package:e_commerce/theme/color.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:web3modal_flutter/services/w3m_service/w3m_service.dart';
+import 'package:web3modal_flutter/web3modal_flutter.dart';
 import '../../../components/snackbar.dart';
 import '../../../service/auth.dart';
 import '../../../service/progress.dart';
@@ -20,6 +22,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  late W3MService _w3mService;
 
   bool _obscureText = true;
   bool termsAndCondition = false;
@@ -28,6 +31,25 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       _obscureText = !_obscureText;
     });
+  }
+  @override
+  void initState() {
+    _w3mService = W3MService(
+      projectId: '496ab5c52369695e23b3d534fc66a1aa',
+      metadata: const PairingMetadata(
+        name: 'Tezda',
+        description: 'Tezda e-commerce app',
+        url: 'https://www.sam-dev.vercel.app',
+        icons: ['https://walletconnect.com/walletconnect-logo.png'],
+        redirect: Redirect(
+          native: 'flutterdapp://',
+          universal: 'https://www.walletconnect.com',
+        ),
+      ),
+    );
+    _w3mService.init();
+
+    super.initState();
   }
 
   login() async {
@@ -80,6 +102,7 @@ class _LoginPageState extends State<LoginPage> {
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
+    _w3mService.dispose();
     super.dispose();
   }
 
@@ -250,7 +273,7 @@ class _LoginPageState extends State<LoginPage> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: primaryYellow,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(30),
                         ),
                       ),
                       child: Text(
@@ -260,7 +283,61 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 20,
+                  ),
+                  Center(child: Text('OR',style: smallBold(primaryWhite),)),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  SizedBox(
+                    height: size.height * 0.065,
+                    width: size.width,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        try {
+                          await _w3mService.openModal(context);
+                          var token = await AuthService.getCustomToken(
+                            _w3mService.session!.address!,
+                          );
+                          await AuthService.signInCustom(
+                            token,
+                          );
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (ctx) => const HomePage(),
+                            ),
+                          );
+                        } catch (e) {
+                          print(e);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primaryWhite,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            const SizedBox(
+                              height: 35,
+                              width: 35,
+                              child: Image(
+                                image: AssetImage('assets/mask.png'),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Text(
+                              "Continue with Meta Mask",
+                              style: mediumBold(primaryBlack),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

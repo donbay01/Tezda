@@ -1,6 +1,8 @@
 import 'package:crystal_navigation_bar/crystal_navigation_bar.dart';
 import 'package:e_commerce/pages/product/favorites.dart';
 import 'package:e_commerce/pages/product/list.dart';
+import 'package:e_commerce/pages/profile/profile_page.dart';
+import 'package:e_commerce/theme/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 
@@ -18,6 +20,9 @@ class _HomePageState extends State<HomePage> {
     if (index == 1) {
       return const FavoriteProducts();
     }
+    if (index == 2) {
+      return const ProfilePage();
+    }
 
     return const ProductList();
   }
@@ -26,6 +31,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
+      backgroundColor: scaffoldBlack,
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
         child: showpage(index),
@@ -45,7 +51,7 @@ class _HomePageState extends State<HomePage> {
             CrystalNavigationBarItem(
               icon: IconlyBold.home,
               unselectedIcon: IconlyLight.home,
-              selectedColor: Colors.white,
+              selectedColor: primaryYellow,
             ),
 
             /// Favourite
@@ -53,20 +59,6 @@ class _HomePageState extends State<HomePage> {
               icon: IconlyBold.heart,
               unselectedIcon: IconlyLight.heart,
               selectedColor: Colors.red,
-            ),
-
-            /// Add
-            CrystalNavigationBarItem(
-              icon: IconlyBold.plus,
-              unselectedIcon: IconlyLight.plus,
-              selectedColor: Colors.white,
-            ),
-
-            /// Search
-            CrystalNavigationBarItem(
-              icon: IconlyBold.search,
-              unselectedIcon: IconlyLight.search,
-              selectedColor: Colors.white,
             ),
 
             /// Profile

@@ -47,6 +47,9 @@ class AuthService {
     return auth.sendPasswordResetEmail(email: email);
   }
 
+  static Future<void> logout() => auth.signOut();
+
+
   static User? getCurrentUser() {
     return auth.currentUser;
   }
